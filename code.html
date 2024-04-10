@@ -74,30 +74,122 @@
             <div class="col-12 col-lg-8">
                 <pre class="line-numbers">
                     <code class="language-js">
-                        function displayMessage() {
-                            let inputBox = document.getElementById('message');
-                            let message = inputBox.value;
+                        // collect the user inputs
+                        // AKA the Entry Point
+                        function getValues() {
+                        // get the input element for startNumber and grab its value
+                        let startNumber = document.getElementById('startNumber').value;
 
-                            Swal.fire(
-                                {
-                                    title: "App Name",
-                                    text: message,
-                                    icon: "success",
-                                    backdrop: false
-                                }
-                            );
+                        // do the same thing for endNumber
+                        let endNumber = document.getElementById('endNumber').value;
+
+                        startNumber = Number(startNumber);
+                        endNumber = Number(endNumber);
+
+                        if (isNaN(startNumber) || isNaN(endNumber) || startNumber < 1 || endNumber > 100) {
+                            // display an error message
+                            Swal.fire({
+                            icon: "error",
+                            title: "Oops!",
+                            text: 'Please enter a valid number for TallyHo to use.',
+                            backdrop: false
+                            });
+                        } else if(startNumber > endNumber){
+                            [startNumber, endNumber] = [endNumber, startNumber];
+                            
+                            let generatedNumbers = generateValues(startNumber, endNumber);
+                            displayValues(generatedNumbers);
+                        } else {
+                            let generatedNumbers = generateValues(startNumber, endNumber);
+                            displayValues(generatedNumbers);
+                        }
+                        }
+
+                        // generate a list of numbers between those two values
+                        function generateValues(start, end) {
+                        let numbers = [];
+
+                        for (let i = start; i <= end; i++) {
+                            numbers.push(i);
+                        }
+
+                        return numbers;
+                        }
+
+                        // display those numbers in my results table
+                        function displayValues(numberArray) {
+
+                        let tableHtml = '';
+
+                        for (let index = 0; index < numberArray.length; index += 1) {
+                            
+                            let number = numberArray[index];
+
+                            let className = '';
+                            if (number % 2 == 0) {
+                            // use the class 'even' in the html
+                            className = 'even';
+                            } else {
+                            // use the class 'odd' in the html
+                            className = 'odd';
+                            }
+
+                            tableHtml += `<tr><td class="${className}">${number}</td></tr>`;
+                        }
+
+                        let tbody = document.getElementById('results');
+                        tbody.innerHTML = tableHtml;
                         }
                     </code>
                 </pre>
             </div>
             <!-- The code's explanation -->
             <div class="col-12 col-lg-4">
-                <p>The code is structured in one function.</p>
-                <h5><code>displayMessage()</code></h5>
+                <p>The code is structured in three function.</p>
+                <h5><code>getValues()</code></h5>
                 <p>
-                    The <code>displayMessage</code> function gets the
-                    text from the input element and displays it in
-                    a Sweet Alert popup.
+                    The <code>getValues</code> function gets the number from the input elements when the button is
+                    clicked and checks to make sure the user
+                    had input the correct input type and that the numbers are within parameters like the start number
+                    and
+                    end number cannot be words, less than 1 or higher than 100, it also looks to see if the start number
+                    and
+                    the end number are reversed and will switch them so the start is smaller than the end number if any
+                    of the
+                    parameters are wrong it will display an error message prompting the user to pick valid numbers.
+                    Then it calls the <code>generateValues</code> function passing the starNumber and endNumber
+                    variables to be
+                    used in the <code>generateValues</code> function. After it recieves the finished value of
+                    <code>generateValues</code>
+                    the value from that function it will store it in the variable generatedNumbers. Which is then
+                    passed to the <code>displayValues</code> function.
+                </p>
+                <h5><code>generateValues()</code></h5>
+                <p>
+                    The <code>generateValues</code> function will create an empty array called numbers, then it will use
+                    a incrementing
+                    for loop to populate the array with numbers by setting the value of i to match the startNumber value
+                    it recieved
+                    in <code>getValues</code>. After that it will check if i is less than or equal to the endNumber
+                    value it recieved,
+                    if it is less than or equal to the end value it will add that number to the array then increase by
+                    one and repeat
+                    that process until it is not less than or equal to the end value. Once that is finished it will exit
+                    the for loop
+                    and pass the numbers array back to <code>getValues</code> who will then hand the array over to the
+                    <code>displayValues</code> function.
+                </p>
+                <h5><code>displayValues()</code></h5>
+                <p>
+                    The <code>displayValues</code> function The displayFizzBuzz function is where the array
+                    value of generatedNumbers variable is passed to and used to locate each number in its index
+                    position and turn it into an html table element after it has passed through the if/else
+                    statements to check if they have a value that is evenly divisible by 2 to decide if it will be an
+                    even or odd
+                    number with the corrisponding class which is added to the html element. Once each index position in
+                    the array
+                    has been through the if statements it will add the new string thats been created and stored in the
+                    tableHtml variable and adds it to the tbody element in the html page with an id of results.
                 </p>
             </div>
         </div>

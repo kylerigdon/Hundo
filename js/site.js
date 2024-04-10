@@ -10,7 +10,7 @@ function getValues() {
   startNumber = Number(startNumber);
   endNumber = Number(endNumber);
 
-  if (isNaN(startNumber) || isNaN(endNumber) || startNumber < 1 || endNumber > 100 || startNumber > endNumber) {
+  if (isNaN(startNumber) || isNaN(endNumber) || startNumber < 1 || endNumber > 100) {
     // display an error message
     Swal.fire({
       icon: "error",
@@ -18,6 +18,11 @@ function getValues() {
       text: 'Please enter a valid number for TallyHo to use.',
       backdrop: false
     });
+  } else if(startNumber > endNumber){
+    [startNumber, endNumber] = [endNumber, startNumber];
+    
+    let generatedNumbers = generateValues(startNumber, endNumber);
+    displayValues(generatedNumbers);
   } else {
     let generatedNumbers = generateValues(startNumber, endNumber);
     displayValues(generatedNumbers);

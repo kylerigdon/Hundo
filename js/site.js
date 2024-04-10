@@ -10,7 +10,7 @@ function getValues() {
   startNumber = Number(startNumber);
   endNumber = Number(endNumber);
 
-  if (isNaN(startNumber) || isNaN(endNumber) || startNumber < 1 || endNumber > 100) {
+  if (isNaN(startNumber) || isNaN(endNumber) || startNumber < 1 || endNumber > 100 || startNumber > endNumber) {
     // display an error message
     Swal.fire({
       icon: "error",
